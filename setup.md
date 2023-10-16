@@ -282,3 +282,7 @@ $ npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
   }
 }
 ```
+## git
+wslのubuntu上でgit initしてリモートリポジトリを設定  
+~~windowsからgit init~~  
+~~dockerコンテナからgit init~~
