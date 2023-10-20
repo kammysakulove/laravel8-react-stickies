@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+//  Laravelでのキャッチオールルート:
+//
+//  Laravelのweb.phpルートファイルで、すべての非APIリクエストをReactアプリケーションにリダイレクトするキャッチオールルートを定義します。
+//これにより、ReactのルーターがURLを処理することができます。
+Route::get('/{any}', function () {
     return view('index');
-});
+})->where('any', '.*');
