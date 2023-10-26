@@ -21,6 +21,7 @@
   });
   Route::post('login', [AuthController::class, 'login']);
   Route::post('logout', [AuthController::class, 'logout']);
+  Route::post('me', [AuthController::class, 'getUser']);
   Route::get('test', function () {
     return User::all();
   });

@@ -11,6 +11,7 @@
   {
     use HasApiTokens, HasFactory;
 
+    public $timestamps = false;
     protected $guarded = ['id'];
     protected $hidden = ['password'];
     protected $casts = [
