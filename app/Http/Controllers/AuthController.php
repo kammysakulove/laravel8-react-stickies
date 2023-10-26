@@ -32,4 +32,14 @@
 
       return response()->json(true);
     }
+
+    public function getUser(Request $request)
+    {
+      if (Auth::check()) {
+        return response()->json(Auth::user());
+      }
+
+      return response()->json([], 401);
+    }
+
   }
