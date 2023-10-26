@@ -71,7 +71,7 @@
 
     public function test_me()
     {
-      //$this->actingAs($this->user);
+      $this->actingAs($this->user);
 
       $response = $this->post('/api/me');
 
