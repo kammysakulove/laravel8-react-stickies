@@ -1,15 +1,15 @@
 {
-  "resources/ts/App.css": {
-    "file": "assets/App-e12e197a.css",
+  "resources/ts/index.css": {
+    "file": "assets/index-e12e197a.css",
     "isEntry": true,
-    "src": "resources/ts/App.css"
+    "src": "resources/ts/index.css"
   },
-  "resources/ts/main.tsx": {
+  "resources/ts/index.tsx": {
     "css": [
-      "assets/App-e12e197a.css"
+      "assets/index-e12e197a.css"
     ],
-    "file": "assets/main-4615a593.js",
+    "file": "assets/index-75d13997.js",
     "isEntry": true,
-    "src": "resources/ts/main.tsx"
+    "src": "resources/ts/index.tsx"
   }
 }

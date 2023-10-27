@@ -1,65 +1,47 @@
 import { Button, Flex, Input } from "@chakra-ui/react";
-import axios from "axios";
-import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useLogin, LoginCredentials } from "../api/login";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [users, setUsers] = useState([]);
+  const { register, handleSubmit } = useForm<LoginCredentials>();
+  const mutation = useLogin();
+  const navigate = useNavigate();
 
-  const http = axios.create({
-    baseURL: "http://localhost:8080/laravel8-react-stickies",
-    withCredentials: true,
-  });
-
-  const login = () => {
-    http.get("/sanctum/csrf-cookie").then((res) => {
-      http.post("/api/login", { email, password }).then((res) => {
-        console.log(res);
-        //setUsers(res);
-      });
+  const onSubmit: SubmitHandler<LoginCredentials> = async (data) => {
+    await mutation.mutateAsync(data, {
+      onSuccess: () => {
+        console.log("mutate success");
+        navigate("/stickies/home");
+      },
     });
   };
-  const getUsers = () => {
-    http.get("/api/users").then((res) => {
-      setUsers(res.data);
-    });
-  };
+
   return (
     <>
       <Flex height="100vh" alignItems="center" justifyContent="center">
         <Flex direction="column" background="gray.50" p={12} rounded={6}>
-          <Input
-            placeholder="user@test.jp"
-            variant="outline"
-            mb={3}
-            type="email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-          <Input
-            placeholder="*******"
-            variant="outline"
-            mb={6}
-            type="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-          <Button colorScheme="teal" onClick={login}>
-            ログイン
-          </Button>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              {...register("email")}
+              placeholder="user@test.jp"
+              variant="outline"
+              mb={3}
+              type="email"
+            />
+            <Input
+              {...register("password")}
+              placeholder="*******"
+              variant="outline"
+              mb={6}
+              type="password"
+            />
+            <Button colorScheme="teal" type="submit">
+              ログイン
+            </Button>
+          </form>
         </Flex>
       </Flex>
-      <Button colorScheme="teal" onClick={getUsers}>
-        一覧表示
-      </Button>
-      <div>
-        {users.map((user) => {
-          return <p key={user.id}>{user.email}</p>;
-        })}
-      </div>
     </>
   );
 };
