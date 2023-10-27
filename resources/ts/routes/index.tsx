@@ -1,18 +1,30 @@
 import { Navigate, useRoutes } from "react-router-dom";
-import AuthRoutes from "../features/auth/routes";
-//import Register from "../features/auth/routes/Register";
+import { useGetUser } from "@/features/auth";
+import { guestRoutes } from "./guest";
+import { authRoutes } from "./auth";
 
 const AppRouter = () => {
-  const element = useRoutes([
+  // 認証ユーザー取得
+  const { user, isLoading } = useGetUser();
+  console.log(user, isLoading);
+
+  const defaultRoutes = [
     {
       path: "/",
       element: <Navigate to="/auth/login" />,
     },
     {
-      path: "/auth/*",
-      element: <AuthRoutes />,
+      path: "*",
+      element: <Navigate to="/" />,
     },
-  ]);
+  ];
+
+  const routes = user ? authRoutes : guestRoutes;
+  const element = useRoutes([...routes, ...defaultRoutes]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return <>{element}</>;
 };
