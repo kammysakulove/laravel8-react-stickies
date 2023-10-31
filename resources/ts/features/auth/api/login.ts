@@ -1,18 +1,14 @@
 import { http } from "@/lib/http";
 import { AuthUser } from "../types";
 import { authKeys } from "@/features/auth/api/queryKey";
-import {
-  useMutation,
-  UseMutationResult,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthUserStore } from "@/store/authUserStore";
 
 export type LoginCredentials = {
   email: string;
   password: string;
 };
+
 export const loginWithEmailAndPassword = (
   credential: LoginCredentials
 ): Promise<AuthUser> => {
@@ -22,18 +18,14 @@ export const loginWithEmailAndPassword = (
   });
 };
 
-export const useLogin = (): UseMutationResult<
-  AuthUser,
-  AxiosError,
-  LoginCredentials,
-  undefined
-> => {
+export const useLogin = () => {
   const queryClient = useQueryClient();
-  const authUser = useAuthUserStore((state) => state.login);
-  return useMutation(loginWithEmailAndPassword, {
-    onSuccess: (res) => {
+  const loginUser = useAuthUserStore((state) => state.login);
+  return useMutation({
+    onSuccess: (res: AuthUser) => {
       queryClient.setQueryData(authKeys.user, res);
-      authUser(res);
+      loginUser(res);
     },
+    mutationFn: loginWithEmailAndPassword,
   });
 };
