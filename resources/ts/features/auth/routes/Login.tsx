@@ -11,7 +11,6 @@ const Login = () => {
   const onSubmit: SubmitHandler<LoginCredentials> = async (data) => {
     await mutation.mutateAsync(data, {
       onSuccess: () => {
-        console.log("mutate success");
         navigate("/stickies/home");
       },
     });

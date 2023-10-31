@@ -1,22 +1,20 @@
-import {
-  QueryClient,
-  DefaultOptions,
-  UseQueryOptions,
-  QueryKey,
-} from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import { QueryClient, DefaultOptions } from "@tanstack/react-query";
 
 const queryConfig: DefaultOptions = {
   queries: {
-    useErrorBoundary: false,
     refetchOnWindowFocus: false,
     retry: false,
   },
 };
 
 export const queryClient = new QueryClient({ defaultOptions: queryConfig });
-
-export type AppQueryOptions<TData, TQuerykey extends QueryKey> = Omit<
-  UseQueryOptions<TData, AxiosError, TData, TQuerykey>,
-  "queryKey" | "queryFn"
->;
+//
+// export type AppQueryOptions<TData> = Omit<
+//   UseQueryOptions<TData, AxiosError, TData>,
+//   "queryKey" | "queryFn"
+// >;
+//
+// export type AppMutationOptions<TVariables, TData> = Omit<
+//   UseMutationOptions<TData, AxiosError, TVariables>,
+//   "mutationKey" | "mutationFn"
+// >;
