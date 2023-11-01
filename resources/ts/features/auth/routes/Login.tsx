@@ -11,9 +11,24 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useLogin, LoginCredentials } from "../api/login";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+
+const schema = z.object({
+  email: z.string().min(1, "入力してください"),
+  password: z.string().min(1, "入力してください"),
+});
 
 const Login = () => {
-  const { register, handleSubmit } = useForm<LoginCredentials>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginCredentials>({
+    resolver: zodResolver(schema),
+  });
+  const [authError, setAuthError] = useState<boolean>(false);
   const mutation = useLogin();
   const navigate = useNavigate();
 
@@ -21,6 +36,10 @@ const Login = () => {
     await mutation.mutateAsync(data, {
       onSuccess: () => {
         navigate("/stickies/home");
+      },
+      onError: (error) => {
+        console.log("login failed...", error);
+        setAuthError(true);
       },
     });
   };
@@ -30,7 +49,7 @@ const Login = () => {
       <Flex height="100vh" alignItems="center" justifyContent="center">
         <Flex direction="column" background="gray.50" p={12} rounded={6}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl mb={3} isInvalid={false}>
+            <FormControl mb={3} isInvalid={!!errors.email}>
               <FormLabel>Email</FormLabel>
               <Input
                 {...register("email")}
@@ -38,9 +57,11 @@ const Login = () => {
                 variant="outline"
                 type="email"
               />
-              <FormErrorMessage>test</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl mb={6} isInvalid={false}>
+            <FormControl mb={6} isInvalid={!!errors.password}>
               <FormLabel>パスワード</FormLabel>
               <Input
                 {...register("password")}
@@ -48,12 +69,16 @@ const Login = () => {
                 variant="outline"
                 type="password"
               />
-              <FormErrorMessage>test</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.password && errors.password.message}
+              </FormErrorMessage>
             </FormControl>
-            <Alert mb={5} status="error">
-              <AlertIcon />
-              Your Chakra experience may be degraded.
-            </Alert>
+            {authError && (
+              <Alert mb={5} status="error">
+                <AlertIcon />
+                メールアドレスまたはパスワードが間違っています
+              </Alert>
+            )}
             <Button colorScheme="teal" type="submit">
               ログイン
             </Button>
