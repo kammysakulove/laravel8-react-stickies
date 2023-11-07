@@ -1,19 +1,10 @@
-import {
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Alert,
-  AlertIcon,
-} from "@chakra-ui/react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useLogin, LoginCredentials } from "../api/login";
+import { useState } from "react";
+import { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { Button, Flex, Alert, AlertIcon } from "@chakra-ui/react";
+import { useLogin, LoginCredentials } from "../api/login";
+import { Form, InputField } from "@/components/Form";
 
 const schema = z.object({
   email: z.string().min(1, "入力してください"),
@@ -21,13 +12,6 @@ const schema = z.object({
 });
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginCredentials>({
-    resolver: zodResolver(schema),
-  });
   const [authError, setAuthError] = useState<boolean>(false);
   const mutation = useLogin();
   const navigate = useNavigate();
@@ -48,41 +32,40 @@ const Login = () => {
     <>
       <Flex height="100vh" alignItems="center" justifyContent="center">
         <Flex direction="column" background="gray.50" p={12} rounded={6}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl mb={3} isInvalid={!!errors.email}>
-              <FormLabel>Email</FormLabel>
-              <Input
-                {...register("email")}
-                placeholder="user@test.jp"
-                variant="outline"
-                type="email"
-              />
-              <FormErrorMessage>
-                {errors.email && errors.email.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl mb={6} isInvalid={!!errors.password}>
-              <FormLabel>パスワード</FormLabel>
-              <Input
-                {...register("password")}
-                placeholder="*******"
-                variant="outline"
-                type="password"
-              />
-              <FormErrorMessage>
-                {errors.password && errors.password.message}
-              </FormErrorMessage>
-            </FormControl>
-            {authError && (
-              <Alert mb={5} status="error">
-                <AlertIcon />
-                メールアドレスまたはパスワードが間違っています
-              </Alert>
+          <Form<LoginCredentials, typeof schema>
+            onSubmit={(values) => onSubmit(values)}
+            schema={schema}
+          >
+            {({ register, formState }) => (
+              <>
+                <InputField
+                  mb={3}
+                  label="Email"
+                  placeholder="user@test.jp"
+                  error={formState.errors.email}
+                  type="email"
+                  register={register("email")}
+                />
+                <InputField
+                  mb={3}
+                  label="パスワード"
+                  placeholder="*******"
+                  error={formState.errors.password}
+                  type="password"
+                  register={register("password")}
+                />
+                {authError && (
+                  <Alert mb={5} status="error">
+                    <AlertIcon />
+                    メールアドレスまたはパスワードが間違っています
+                  </Alert>
+                )}
+                <Button colorScheme="teal" type="submit">
+                  ログイン
+                </Button>
+              </>
             )}
-            <Button colorScheme="teal" type="submit">
-              ログイン
-            </Button>
-          </form>
+          </Form>
         </Flex>
       </Flex>
     </>
