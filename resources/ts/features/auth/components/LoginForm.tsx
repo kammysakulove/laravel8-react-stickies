@@ -1,32 +1,32 @@
-import { useState } from 'react'
-import { SubmitHandler } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
-import { z } from 'zod'
-import { Button, Alert, AlertIcon, Stack } from '@chakra-ui/react'
-import { useLogin, LoginCredentials } from '../api/login'
-import { Form, InputField } from '@/components/Form'
+import { useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { Button, Center, Alert, AlertIcon, Stack, Link } from '@chakra-ui/react';
+import { useLogin, LoginCredentials } from '../api/login';
+import { Form, InputField } from '@/components/Form';
 
 const schema = z.object({
   email: z.string().min(1, '入力してください'),
   password: z.string().min(1, '入力してください'),
-})
+});
 
 export const LoginForm = () => {
-  const [authError, setAuthError] = useState<boolean>(false)
-  const mutation = useLogin()
-  const navigate = useNavigate()
+  const [authError, setAuthError] = useState<boolean>(false);
+  const mutation = useLogin();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<LoginCredentials> = async (data) => {
     await mutation.mutateAsync(data, {
       onSuccess: () => {
-        navigate('/stickies/home')
+        navigate('/stickies/home');
       },
       onError: (error) => {
-        console.log('login failed...', error)
-        setAuthError(true)
+        console.log('login failed...', error);
+        setAuthError(true);
       },
-    })
-  }
+    });
+  };
 
   return (
     <Form<LoginCredentials, typeof schema> onSubmit={(values) => onSubmit(values)} schema={schema}>
@@ -50,15 +50,16 @@ export const LoginForm = () => {
               <Button w={'full'} bg={'gray.300'} _hover={{ bg: 'gray.400' }} type="submit">
                 ログイン
               </Button>
-              <Link to="../register">
-                <Button w={'full'} colorScheme="teal" type="submit">
-                  新規登録
-                </Button>
-              </Link>
+              <Center>
+                新規登録は
+                <Link href="../auth/register" color="teal">
+                  こちら
+                </Link>
+              </Center>
             </Stack>
           </Stack>
         </>
       )}
     </Form>
-  )
-}
+  );
+};
