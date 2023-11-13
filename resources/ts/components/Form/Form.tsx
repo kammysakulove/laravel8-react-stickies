@@ -10,7 +10,7 @@ import { ZodSchema } from "zod";
 
 type FormProps<
   TValues extends FieldValues,
-  TSchema extends ZodSchema<TValues>
+  TSchema extends ZodSchema<TValues>,
 > = {
   onSubmit: SubmitHandler<TValues>;
   schema: TSchema;
@@ -19,7 +19,7 @@ type FormProps<
 
 export const Form = <
   TValues extends FieldValues,
-  TSchema extends ZodSchema<TValues>
+  TSchema extends ZodSchema<TValues>,
 >({
   onSubmit,
   schema,
@@ -28,7 +28,6 @@ export const Form = <
   const methods = useForm<TValues>({
     resolver: zodResolver(schema),
   });
-  //const MemoizedChildren = memo(children);
 
   return (
     <form onSubmit={methods.handleSubmit(onSubmit)}>{children(methods)}</form>
