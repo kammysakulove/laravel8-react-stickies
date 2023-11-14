@@ -1,16 +1,23 @@
-import { Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogProps } from '@chakra-ui/react';
-import { useRef } from 'react';
+import { Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, useDisclosure } from '@chakra-ui/react';
+import { ReactNode, useRef } from 'react';
 
-type OKAlertDialogProps = Omit<AlertDialogProps, 'leastDestructiveRef' | 'children'> & {
-  title: string;
-  body: string;
+type OKAlertDialogProps = {
+  title: ReactNode;
+  body: ReactNode;
+  disclosure: ReturnType<typeof useDisclosure>;
+  onCloseAdditional?: () => void;
 };
 
-export const OKAlertDialog = ({ title, body, isOpen, onClose }: OKAlertDialogProps) => {
+export const OKAlertDialog = ({ title, body, disclosure, onCloseAdditional }: OKAlertDialogProps) => {
   const cancelRef = useRef<HTMLDivElement>(null);
 
+  const handleClose = () => {
+    onCloseAdditional?.();
+    disclosure.onClose();
+  };
+
   return (
-    <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose} closeOnEsc={false} closeOnOverlayClick={false}>
+    <AlertDialog isOpen={disclosure.isOpen} leastDestructiveRef={cancelRef} onClose={handleClose} closeOnEsc={false} closeOnOverlayClick={false}>
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -19,7 +26,7 @@ export const OKAlertDialog = ({ title, body, isOpen, onClose }: OKAlertDialogPro
           <AlertDialogBody>{body}</AlertDialogBody>
 
           <AlertDialogFooter>
-            <Button colorScheme="red" onClick={onClose}>
+            <Button colorScheme="red" onClick={handleClose}>
               OK
             </Button>
           </AlertDialogFooter>
