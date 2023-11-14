@@ -16,13 +16,13 @@ const schema = z.object({
 export const RegisterForm = () => {
   const [authError, setAuthError] = useState<boolean | string | string[]>(false);
   const mutation = useRegister();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const disclosure = useDisclosure();
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<RegisterCredentials> = async (data) => {
     await mutation.mutateAsync(data, {
       onSuccess: () => {
-        onOpen();
+        disclosure.onOpen();
       },
       onError: (error) => {
         setAuthError(error.response.data);
@@ -31,7 +31,7 @@ export const RegisterForm = () => {
   };
 
   const onCloseAlert = () => {
-    onClose();
+    disclosure.onClose();
     navigate('/stickies/home');
   };
 
@@ -65,7 +65,7 @@ export const RegisterForm = () => {
         )}
       </Form>
 
-      <OKAlertDialog isOpen={isOpen} onClose={onCloseAlert} title="" body="ユーザー登録を完了しました。" />
+      <OKAlertDialog disclosure={disclosure} onCloseAdditional={onCloseAlert} title="" body="ユーザー登録を完了しました。" />
     </>
   );
 };
