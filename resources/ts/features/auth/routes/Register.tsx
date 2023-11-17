@@ -1,10 +1,9 @@
-import { AuthLayout } from "@/components/Layout";
-import { RegisterForm } from "@/features/auth/components/RegisterForm";
-
-export const Register = () => {
+const Register = () => {
   return (
-    <AuthLayout>
-      <RegisterForm />
-    </AuthLayout>
+    <>
+      <h1>Register</h1>
+    </>
   );
 };
+
+export default Register;
