@@ -8,6 +8,5 @@
     ],
     "transform": {
         "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-    "setupFilesAfterEnv": ["<rootDir>/resources/ts/mock/jest.setup.ts"]
+    }
 }

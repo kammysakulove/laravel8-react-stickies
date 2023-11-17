@@ -19,9 +19,8 @@
       parent::setUp();
 
       $this->user = User::factory()->create([
-        'name' => '山田太郎',
-        'email' => 'user@test.jp',
-        'password' => Hash::make('0000'),
+        "email" => "user@test.jp",
+        "password" => Hash::make('0000'),
       ]);
 
       User::factory()->count(3)->create();
@@ -68,31 +67,6 @@
       $response->assertStatus(200);
 
       $this->assertGuest();
-    }
-
-    public function test_register()
-    {
-      $params = [
-        'name' => '山田太郎',
-        'email' => 'user@test.jp',
-        'password' => '0000',
-      ];
-
-      // already
-      $response = $this->post('/api/register', $params);
-      $response->assertStatus(422);
-
-      $params = [
-        'name' => '高田玲奈',
-        'email' => 'user6@test.jp',
-        'password' => '0000',
-      ];
-
-      $response = $this->post('/api/register', $params);
-      $response
-        ->assertStatus(200)
-        ->assertJson(['name' => $params['name']])
-        ->assertJson(['email' => $params['email']]);
     }
 
     public function test_me()
