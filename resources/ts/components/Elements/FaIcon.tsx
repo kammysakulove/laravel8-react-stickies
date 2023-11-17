@@ -130,7 +130,7 @@ const findIcon = (name: string): IconDefinition | undefined => {
   return iconMap[formattedIconName] || undefined;
 };
 
-type FaIconProps = {
+export type FaIconProps = {
   icon?: string;
   stack?: [string, string];
   size?: SizeProp;
