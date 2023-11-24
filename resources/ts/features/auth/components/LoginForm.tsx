@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { Button, Center, Alert, AlertIcon, Stack, Link } from '@chakra-ui/react';
 import { useLogin, LoginCredentials } from '../api/login';
@@ -11,18 +10,21 @@ const schema = z.object({
   password: z.string().min(1, '入力してください'),
 });
 
-export const LoginForm = () => {
+export type LoginFormProps = {
+  onSuccess: () => void;
+};
+
+export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+  console.log('render login');
   const [authError, setAuthError] = useState<boolean>(false);
   const mutation = useLogin();
-  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<LoginCredentials> = async (data) => {
-    await mutation.mutateAsync(data, {
+  const onSubmit: SubmitHandler<LoginCredentials> = (data) => {
+    mutation.mutate(data, {
       onSuccess: () => {
-        navigate('/stickies/home');
+        onSuccess();
       },
-      onError: (error) => {
-        console.log('login failed...', error);
+      onError: (_error) => {
         setAuthError(true);
       },
     });
@@ -47,7 +49,7 @@ export const LoginForm = () => {
               </Stack>
             )}
             <Stack spacing={5}>
-              <Button w={'full'} bg={'gray.300'} _hover={{ bg: 'gray.400' }} type="submit">
+              <Button w={'full'} bg={'gray.300'} _hover={{ bg: 'gray.400' }} type="submit" isDisabled={mutation.isLoading}>
                 ログイン
               </Button>
               <Center>

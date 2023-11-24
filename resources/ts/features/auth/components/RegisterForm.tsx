@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { Button, Alert, AlertIcon, Stack, useDisclosure } from '@chakra-ui/react';
 import { useRegister, RegisterCredentials } from '../api/register';
 import { Form, InputField } from '@/components/Form';
-import { useNavigate } from 'react-router-dom';
 import { OKAlertDialog } from '@/components/Elements/OKAlertDialog';
+import { useNavigate } from 'react-router-dom';
 
 const schema = z.object({
   name: z.string().min(1, '入力してください'),
@@ -13,14 +13,18 @@ const schema = z.object({
   password: z.string().min(1, '入力してください'),
 });
 
-export const RegisterForm = () => {
+export type RegisterFormProps = {
+  onSuccess: () => void;
+};
+
+export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const [authError, setAuthError] = useState<boolean | string | string[]>(false);
   const mutation = useRegister();
   const disclosure = useDisclosure();
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<RegisterCredentials> = async (data) => {
-    await mutation.mutateAsync(data, {
+  const onSubmit: SubmitHandler<RegisterCredentials> = (data) => {
+    mutation.mutate(data, {
       onSuccess: () => {
         disclosure.onOpen();
       },
@@ -32,7 +36,7 @@ export const RegisterForm = () => {
 
   const onCloseAlert = () => {
     disclosure.onClose();
-    navigate('/stickies/home');
+    onSuccess();
   };
 
   return (
@@ -56,8 +60,11 @@ export const RegisterForm = () => {
                 </Stack>
               )}
               <Stack spacing={5}>
-                <Button w={'full'} colorScheme="teal" type="submit">
+                <Button w={'full'} colorScheme="teal" type="submit" isDisabled={mutation.isLoading}>
                   新規登録
+                </Button>
+                <Button w={'full'} colorScheme="yellow" type="button" onClick={() => navigate('/auth/login')} isDisabled={mutation.isLoading}>
+                  キャンセル
                 </Button>
               </Stack>
             </Stack>
