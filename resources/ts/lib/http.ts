@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 const http = axios.create({
-  baseURL: "http://localhost:8080/laravel8-react-stickies",
+  baseURL: 'http://localhost:8080/laravel8-react-stickies',
   withCredentials: true,
 });
 
@@ -11,9 +11,9 @@ http.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
-    console.log(message);
+    console.error('response error', message);
     return Promise.reject(error);
-  }
+  },
 );
 
 export { http };
