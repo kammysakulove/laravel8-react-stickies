@@ -5,7 +5,6 @@ import { Button, Alert, AlertIcon, Stack, useDisclosure } from '@chakra-ui/react
 import { useRegister, RegisterCredentials } from '../api/register';
 import { Form, InputField } from '@/components/Form';
 import { OKAlertDialog } from '@/components/Elements/OKAlertDialog';
-import { useNavigate } from 'react-router-dom';
 
 const schema = z.object({
   name: z.string().min(1, '入力してください'),
@@ -15,13 +14,13 @@ const schema = z.object({
 
 export type RegisterFormProps = {
   onSuccess: () => void;
+  onCancel: () => void;
 };
 
-export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
+export const RegisterForm = ({ onSuccess, onCancel }: RegisterFormProps) => {
   const [authError, setAuthError] = useState<boolean | string | string[]>(false);
   const mutation = useRegister();
   const disclosure = useDisclosure();
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<RegisterCredentials> = (data) => {
     mutation.mutate(data, {
@@ -63,7 +62,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
                 <Button w={'full'} colorScheme="teal" type="submit" isDisabled={mutation.isLoading}>
                   新規登録
                 </Button>
-                <Button w={'full'} colorScheme="yellow" type="button" onClick={() => navigate('/auth/login')} isDisabled={mutation.isLoading}>
+                <Button w={'full'} colorScheme="yellow" type="button" onClick={onCancel} isDisabled={mutation.isLoading}>
                   キャンセル
                 </Button>
               </Stack>

@@ -11,6 +11,9 @@ export const Register = () => {
         onSuccess={() => {
           navigate('/stickies/home');
         }}
+        onCancel={() => {
+          navigate('/auth/login');
+        }}
       />
     </AuthLayout>
   );
