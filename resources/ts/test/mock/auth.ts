@@ -6,6 +6,12 @@ type LoginBody = {
   password: string;
 };
 
+type RegisterBody = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export const authHandlers = [
   rest.get(baseUrl + '/sanctum/csrf-cookie', (_, res, ctx) => {
     return res(ctx.body('1'));
@@ -33,18 +39,22 @@ export const authHandlers = [
     return res(ctx.json(true));
   }),
 
-  rest.post(baseUrl + '/api/register', (req, res, ctx) => {
+  rest.post<RegisterBody>(baseUrl + '/api/register', async (req, res, ctx) => {
     // 登録リクエストのモック
-    const { name, email, password } = req.params;
+    const { name, email, password } = await req.json();
 
-    return res(
-      ctx.json({
-        id: 2,
-        name: name,
-        email: email,
-        password: password,
-      }),
-    );
+    if (email === testUsers[0].email) {
+      return res(ctx.status(422), ctx.json(['メールアドレスは既に存在しています。']));
+    } else {
+      return res(
+        ctx.json({
+          id: 2,
+          name: name,
+          email: email,
+          password: password,
+        }),
+      );
+    }
   }),
 
   rest.get(baseUrl + '/api/me', (_, res, ctx) => {

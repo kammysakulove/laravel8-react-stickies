@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "jest --config ./jest.config.json --silent",
-    "test:log": "jest --config ./jest.config.json --silent=false --verbose false",
+    "test": "jest --config ./jest.config.json --silent --verbose",
+    "test:console": "jest -- --config ./jest.config.json --silent=false --verbose",
     "test:watch": "npm run test -- --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
