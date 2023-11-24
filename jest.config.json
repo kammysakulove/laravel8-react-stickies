@@ -1,7 +1,11 @@
 {
+    "testEnvironment": "jsdom",
     "roots": [
         "<rootDir>/resources/ts"
     ],
+    "moduleNameMapper": {
+        "@/(.*)$": "<rootDir>/resources/ts/$1"
+    },
     "testMatch": [
         "**/__tests__/**/*.+(ts|tsx|js)",
         "**/?(*.)+(spec|test).+(ts|tsx|js)"
@@ -9,5 +13,5 @@
     "transform": {
         "^.+\\.(ts|tsx)$": "ts-jest"
     },
-    "setupFilesAfterEnv": ["<rootDir>/resources/ts/mock/jest.setup.ts"]
+    "setupFilesAfterEnv": ["<rootDir>/resources/ts/test/mock/jest.setup.ts"]
 }
