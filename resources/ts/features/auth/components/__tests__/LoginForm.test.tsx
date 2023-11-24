@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@/test/test-utils';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { LoginForm } from '../LoginForm';
-describe('LoginFormテスト', () => {
+describe('LoginForm', () => {
   let onSuccess: () => void;
 
   beforeEach(() => {

@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@/test/test-utils';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { RegisterForm } from '../RegisterForm';
-describe('RegisterFormテスト', () => {
+describe('RegisterForm', () => {
   let onSuccess: () => void;
   let onCancel: () => void;
 
