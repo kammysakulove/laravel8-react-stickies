@@ -56,6 +56,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle, faYoutube, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { IconDefinition, library, SizeProp } from '@fortawesome/fontawesome-svg-core';
+import { useToken } from '@chakra-ui/react';
 
 const iconMap: { [key: string]: IconDefinition } = {
   faCircle: faCircle,
@@ -140,7 +141,7 @@ export type FaIconProps = {
 
 const SingleIcon = ({ icon, size, color, spin }: FaIconProps) => {
   const iconDifinition = icon && findIcon(icon);
-  return iconDifinition ? <FontAwesomeIcon icon={iconDifinition} size={size} color={color} spin={spin} /> : null;
+  return iconDifinition ? <FontAwesomeIcon icon={iconDifinition} size={size} style={{ color: color }} spin={spin} /> : null;
 };
 
 const StackedIcon = ({ stack, size, color, spin }: FaIconProps) => {
@@ -150,17 +151,19 @@ const StackedIcon = ({ stack, size, color, spin }: FaIconProps) => {
 
   return (
     <span className={`fa-stack ${faSize}`}>
-      {iconBaseDifinition ? <FontAwesomeIcon icon={iconBaseDifinition} className="fa-stack-2x" color={color} spin={spin} /> : null}
+      {iconBaseDifinition ? <FontAwesomeIcon icon={iconBaseDifinition} className="fa-stack-2x" style={{ color: color }} spin={spin} /> : null}
       {iconDifinition ? <FontAwesomeIcon icon={iconDifinition} className="fa-stack-1x fa-inverse" spin={spin} /> : null}
     </span>
   );
 };
 
 export const FaIcon = ({ icon, stack, size = 'sm', color = 'black', spin = false }: FaIconProps) => {
+  const iconColor = useToken('colors', color);
+
   return (
     <>
-      {icon && <SingleIcon icon={icon} size={size} color={color} spin={spin} />}
-      {stack && <StackedIcon stack={stack} size={size} color={color} spin={spin} />}
+      {icon && <SingleIcon icon={icon} size={size} color={iconColor} spin={spin} />}
+      {stack && <StackedIcon stack={stack} size={size} color={iconColor} spin={spin} />}
     </>
   );
 };
