@@ -1,3 +1,4 @@
 export const authKeys = {
-  user: ["user"] as const,
+  auth: ['auth', 'user'] as const,
+  login: ['login', 'user'] as const,
 };

@@ -21,7 +21,7 @@ export const useLogin = () => {
   const loginUser = useAuthUserStore((state) => state.login);
   return useMutation({
     onSuccess: (res: AuthUser) => {
-      queryClient.setQueryData(authKeys.user, res);
+      queryClient.setQueryData(authKeys.login, res);
       loginUser(res);
     },
     useErrorBoundary: false,
