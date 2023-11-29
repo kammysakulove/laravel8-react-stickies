@@ -12,7 +12,7 @@ export const useLogout = () => {
   const logoutUser = useAuthUserStore((state) => state.logout);
   return useMutation({
     onSuccess: () => {
-      queryClient.resetQueries(authKeys.login);
+      queryClient.resetQueries(authKeys.auth);
       logoutUser();
     },
     mutationFn: logout,
