@@ -15,6 +15,7 @@
     {
       $this->call([
         UserSeeder::class,
+        StickySeeder::class,
       ]);
     }
   }

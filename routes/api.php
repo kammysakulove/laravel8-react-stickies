@@ -1,6 +1,8 @@
 <?php
 
   use App\Http\Controllers\AuthController;
+  use App\Http\Controllers\StickiesController;
+  use App\Http\Controllers\UsersController;
   use App\Models\User;
   use Illuminate\Http\Request;
   use Illuminate\Support\Facades\Route;
@@ -23,6 +25,7 @@
   Route::post('logout', [AuthController::class, 'logout']);
   Route::post('register', [AuthController::class, 'register']);
   Route::post('me', [AuthController::class, 'getUser']);
-  Route::get('test', function () {
-    return User::all();
-  });
+  Route::get('users', [UsersController::class, 'users']);
+  Route::get('stickies', [StickiesController::class, 'getAll']);
+  Route::post('stickies', [StickiesController::class, 'register']);
+  Route::get('stickies/{id}', [StickiesController::class, 'get']);
