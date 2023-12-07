@@ -1,4 +1,4 @@
-import { http } from '@/lib/http';
+import { http } from '@/providers/AxiosProvider';
 import { AuthUser } from '../types';
 import { useMutation } from '@tanstack/react-query';
 
@@ -8,7 +8,7 @@ export type RegisterCredentials = {
   password: string;
 };
 
-export type RegisterErrorResponse = {
+type RegisterErrorResponse = {
   response: {
     data: string | string[];
   };

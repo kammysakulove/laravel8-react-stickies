@@ -1,20 +1,21 @@
-import { Navigate, useRoutes } from "react-router-dom";
-import { useGetUser } from "@/features/auth";
-import { guestRoutes } from "./guest";
-import { authRoutes } from "./auth";
+import { Navigate, useRoutes } from 'react-router-dom';
+import { useGetUser } from '@/features/auth';
+import { guestRoutes } from './guest';
+import { authRoutes } from './auth';
+import { LoadingComponent } from '@/components/Elements/Loading';
 
 const AppRouter = () => {
   // 認証ユーザー取得
   const { user, isLoading } = useGetUser();
-  console.log(user, isLoading);
+  console.log('app router', user, isLoading);
 
   const defaultRoutes = [
     {
-      path: "/",
+      path: '/',
       element: <Navigate to="/auth/login" />,
     },
     {
-      path: "*",
+      path: '*',
       element: <Navigate to="/" />,
     },
   ];
@@ -23,7 +24,7 @@ const AppRouter = () => {
   const element = useRoutes([...routes, ...defaultRoutes]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingComponent />;
   }
 
   return <>{element}</>;

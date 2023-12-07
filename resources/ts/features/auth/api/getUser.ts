@@ -1,11 +1,11 @@
-import { http } from '@/lib/http';
+import { http } from '@/providers/AxiosProvider';
 import { AuthUser } from '../types';
 import { useQuery } from '@tanstack/react-query';
 import { authKeys } from '@/features/auth/api/queryKey';
 import { useAuthUserStore } from '@/store/authUserStore';
 
 const getUser = (): Promise<AuthUser> => {
-  return http.post('/api/me');
+  return http.get('/api/me');
 };
 
 export const useGetUser = (enabled: boolean = true) => {
@@ -18,6 +18,7 @@ export const useGetUser = (enabled: boolean = true) => {
 
   if (isSuccess) {
     authUser(data);
+    console.log('get user success', data);
   }
 
   return { user: data ?? null, isLoading };
