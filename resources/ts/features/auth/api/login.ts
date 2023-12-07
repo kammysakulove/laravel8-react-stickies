@@ -1,4 +1,4 @@
-import { http } from '@/lib/http';
+import { http } from '@/providers/AxiosProvider';
 import { AuthUser } from '../types';
 import { authKeys } from '@/features/auth/api/queryKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -23,6 +23,7 @@ export const useLogin = () => {
     onSuccess: (res: AuthUser) => {
       queryClient.setQueryData(authKeys.auth, res);
       loginUser(res);
+      console.log('login success', res);
     },
     useErrorBoundary: false,
     mutationFn: loginWithEmailAndPassword,
