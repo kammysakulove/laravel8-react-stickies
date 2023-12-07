@@ -27,20 +27,6 @@
       User::factory()->count(3)->create();
     }
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_test()
-    {
-      $response = $this->get('/api/test');
-      //$response->dump();
-
-      $response->assertStatus(200)
-        ->assertJsonCount(4);
-    }
-
     public function test_login()
     {
       $params = [

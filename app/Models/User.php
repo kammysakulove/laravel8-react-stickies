@@ -12,7 +12,7 @@
     use HasApiTokens, HasFactory;
 
     public $timestamps = false;
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'create_at'];
     protected $hidden = ['password'];
     protected $casts = [
       'create_at' => 'datetime:Y-m-d',

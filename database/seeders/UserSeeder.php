@@ -7,6 +7,7 @@
   use App\Models\User;
   use Illuminate\Support\Facades\DB;
   use Illuminate\Support\Facades\Hash;
+  use Illuminate\Support\Facades\Schema;
 
   class UserSeeder extends Seeder
   {
@@ -17,6 +18,7 @@
      */
     public function run()
     {
+      Schema::disableForeignKeyConstraints();
       DB::table('users')->truncate();
 
       DB::table('users')->insert([
