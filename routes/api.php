@@ -18,14 +18,13 @@
   |
   */
 
-  Route::middleware('auth:sanctum')->get('users', function (Request $request) {
-    return User::all();
+  Route::middleware('auth:sanctum')->group(function () {
+    Route::get('me', [AuthController::class, 'getUser']);
+    Route::get('users', [UsersController::class, 'users']);
+    Route::get('stickies', [StickiesController::class, 'getAll']);
+    Route::post('stickies', [StickiesController::class, 'register']);
+    Route::get('stickies/{id}', [StickiesController::class, 'get']);
   });
   Route::post('login', [AuthController::class, 'login']);
   Route::post('logout', [AuthController::class, 'logout']);
   Route::post('register', [AuthController::class, 'register']);
-  Route::post('me', [AuthController::class, 'getUser']);
-  Route::get('users', [UsersController::class, 'users']);
-  Route::get('stickies', [StickiesController::class, 'getAll']);
-  Route::post('stickies', [StickiesController::class, 'register']);
-  Route::get('stickies/{id}', [StickiesController::class, 'get']);

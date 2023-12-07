@@ -1,4 +1,4 @@
-import { http } from '@/lib/http';
+import { http } from '@/providers/AxiosProvider';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthUserStore } from '@/store/authUserStore';
 import { authKeys } from '@/features/auth/api/queryKey';
